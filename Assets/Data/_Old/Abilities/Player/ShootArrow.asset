@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10cebe3e03a921f498c13bc9bb62bdaa, type: 3}
+  m_Name: ShootArrow
+  m_EditorClassIdentifier: 
+  abilityName: Shoot Arrow
+  baseWeight: 0
+  activations:
+  - activationMethod: 1
+    activationConditions: 
+    targetstat: 0
+    gainedOrLost: 0
+    statChangeTarget: 0
+    activationTime: 0
+    keyBind: 2
+  conditions: []
+  abilityIcon: {fileID: 0}
+  useDuration: 0
+  procChance: 1
+  overrideOtherAbilities: 0
+  effectData:
+  - effectName: Shoot
+    riderTarget: 
+    tags: 
+    effectOrigin: 5
+    weaponDelivery: 1
+    weaponDeliveryAnimSpeed: 3
+    weaponPrefabName: BrownBow
+    weaponAnimTrigger: 
+    deliveryMethod: 2
+    effectType: 1
+    durationType: 0
+    statusTypeInfo:
+      stackMethod: 0
+      duration: 0
+      interval: 0
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 0
+      animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
+    projectileInfo:
+      prefabName: Arrow1
+      spreadType: 0
+      projectileCount: 3
+      error: 5
+      burstDelay: 0
+      addInitialForce: 1
+      initialForce:
+        directionType: 5
+        amount: 750
+        angle: 45
+        error: 25
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 3
+      size: 3
+      durationType: 0
+      instantZoneLife: 0.5
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 0
+      effectZoneImpactVFX: Hit Variant
+      effectZoneSpawnVFX: 
+      zoneName: BasicSlashZone
+    animationTrigger: Shoot
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1024
+    adjInfo:
+      adjustmentValue: -5
+      targetStat: 1
+      modType: 0
+      permanent: 1
+      options: 
+    addForceInfo:
+      directionType: 0
+      amount: 0
+      angle: 0
+      error: 0
+      resetCurrentVelocity: 0
+  recoveryData:
+  - type: 1
+    cooldown: 0.2
+    kills: 0
