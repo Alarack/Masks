@@ -15,6 +15,7 @@ public abstract class EffectZone : MonoBehaviour {
     public string impactEffect;
 
     public LayerMask LayerMask { get; protected set; }
+    public AnimHelper AnimHelper { get; protected set; }
 
     protected Effect parentEffect;
     protected List<GameObject> targets = new List<GameObject>();
@@ -26,11 +27,24 @@ public abstract class EffectZone : MonoBehaviour {
         this.LayerMask = mask;
         this.impactEffect = parentEffect.effectZoneInfo.effectZoneImpactVFX;
         this.spawnEffect = parentEffect.effectZoneInfo.effectZoneSpawnVFX;
+        AnimHelper = GetComponent<AnimHelper>();
 
         if(parentToThis != null)
         {
             transform.SetParent(parentToThis, false);
             transform.localPosition = Vector3.zero;
+        }
+
+        if(string.IsNullOrEmpty(parentEffect.effectZoneInfo.effectZoneAnimTrigger) == false)
+        {
+            if(AnimHelper == null)
+            {
+                AnimHelper helper = gameObject.AddComponent<AnimHelper>();
+                helper.PlayAnimTrigger(parentEffect.effectZoneInfo.effectZoneAnimTrigger);
+                return;
+            }
+
+            AnimHelper.PlayAnimTrigger(parentEffect.effectZoneInfo.effectZoneAnimTrigger);
         }
 
         //Debug.Log("Effect zone created");
@@ -126,10 +140,16 @@ public abstract class EffectZone : MonoBehaviour {
     }
 
 
-    protected virtual void ApplyAfterLayerCheck(GameObject other)
+    protected virtual void ApplyAfterLayerCheck(GameObject other, bool checkHits = false)
     {
         if (LayerTools.IsLayerInMask(LayerMask, other.layer) == false)
             return;
+
+        if (checkHits == true)
+        {
+            if (CheckHitTargets(other) == false)
+                return;
+        }
 
         Apply(other.gameObject);
     }

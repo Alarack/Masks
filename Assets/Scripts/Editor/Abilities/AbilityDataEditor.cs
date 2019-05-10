@@ -247,6 +247,7 @@ public class AbilityDataEditor : Editor {
             entry.instantZoneLife = EditorHelper.FloatField("Zone Lifetime", entry.instantZoneLife);
         }
 
+        entry.effectZoneAnimTrigger = EditorGUILayout.TextField("Zone Anim Trigger", entry.effectZoneAnimTrigger);
         entry.effectZoneImpactVFX = EditorGUILayout.TextField("Impact Effect", entry.effectZoneImpactVFX);
         entry.effectZoneSpawnVFX = EditorGUILayout.TextField("Spawn Effect", entry.effectZoneSpawnVFX);
         entry.size = EditorHelper.EnumPopup("Size", entry.size);

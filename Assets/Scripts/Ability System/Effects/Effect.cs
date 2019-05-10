@@ -391,6 +391,7 @@ public struct ZoneInfo
     public float interval;
     public bool removeEffectOnExit;
     public bool parentEffectToOrigin;
+    public string effectZoneAnimTrigger;
     public string effectZoneImpactVFX;
     public string effectZoneSpawnVFX;
     public string zoneName;
@@ -398,7 +399,7 @@ public struct ZoneInfo
 
     public ZoneInfo(VisualEffectLoader.VisualEffectShape shape, VisualEffectLoader.VisualEffectSize size, EffectZone.EffectZoneDuration durationType,
         float duration, float interval, bool removeEffectOnExit, bool parentEffectToOrigin, string effectZoneImpactVFX, string effectZoneSpawnVFX,
-        string zoneName, float instantZoneLife)
+        string zoneName, float instantZoneLife, string effectZoneAnimTrigger)
     {
         this.shape = shape;
         this.size = size;
@@ -411,6 +412,7 @@ public struct ZoneInfo
         this.effectZoneSpawnVFX = effectZoneSpawnVFX;
         this.zoneName = zoneName;
         this.instantZoneLife = instantZoneLife;
+        this.effectZoneAnimTrigger = effectZoneAnimTrigger;
     }
 
 }

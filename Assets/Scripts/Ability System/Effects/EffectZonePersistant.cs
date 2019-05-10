@@ -49,7 +49,7 @@ public class EffectZonePersistant : EffectZone {
 
     protected override void OnTriggerStay(Collider other)
     {
-        ApplyAfterLayerCheck(other.gameObject);
+        ApplyAfterLayerCheck(other.gameObject, true);
 
         //if (LayerTools.IsLayerInMask(LayerMask, other.gameObject.layer) == false)
         //    return;
@@ -61,7 +61,7 @@ public class EffectZonePersistant : EffectZone {
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        ApplyAfterLayerCheck(other.gameObject);
+        ApplyAfterLayerCheck(other.gameObject, true);
 
         //if (LayerTools.IsLayerInMask(LayerMask, other.gameObject.layer) == false)
         //    return;
@@ -100,6 +100,9 @@ public class EffectZonePersistant : EffectZone {
 
     protected override void Apply(GameObject target)
     {
+        if (target == null)
+            return;
+
         parentEffect.Apply(target);
 
         CreateImpactEffect(target.transform.position);
