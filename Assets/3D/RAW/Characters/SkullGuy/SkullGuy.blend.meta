@@ -186,6 +186,7 @@ ModelImporter:
   - first:
       41386430: 2186277476908879412
     second: ImportLogs
+<<<<<<< Updated upstream
   - first:
       74: 2108351568076707837
     second: attack_combo_01
@@ -222,22 +223,36 @@ ModelImporter:
   - first:
       74: 8869056237828680028
     second: run_stop
+=======
+>>>>>>> Stashed changes
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SkullGuy1
+<<<<<<< Updated upstream
     second: {fileID: 2100000, guid: ed39e086081a64a4c952411163bb28cd, type: 2}
+=======
+    second: {fileID: 2100000, guid: 5e353d4864b9a5c47b2387d1a1c49c35, type: 2}
+>>>>>>> Stashed changes
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SkullGuy2
+<<<<<<< Updated upstream
     second: {fileID: 2100000, guid: 6e612c31e1e709343a53b1476a390c42, type: 2}
+=======
+    second: {fileID: 2100000, guid: df6c7fe9aa118be44b43a2c3f3e8eac9, type: 2}
+>>>>>>> Stashed changes
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SkullGuy3
+<<<<<<< Updated upstream
     second: {fileID: 2100000, guid: 32c818eb7ffe520458815e746df4288b, type: 2}
+=======
+    second: {fileID: 2100000, guid: 6e63d578d59e72e44a21dbf214b19dfb, type: 2}
+>>>>>>> Stashed changes
   materials:
     importMaterials: 1
     materialName: 0
@@ -266,11 +281,19 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
+<<<<<<< Updated upstream
       name: tpose
       takeName: tpose
       internalID: 7400000
       firstFrame: 0
       lastFrame: 1
+=======
+      name: Default Take
+      takeName: Default Take
+      internalID: 7400000
+      firstFrame: -1
+      lastFrame: 249
+>>>>>>> Stashed changes
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -295,11 +318,19 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+<<<<<<< Updated upstream
       name: idle
       takeName: idle
       internalID: 7400002
       firstFrame: 0
       lastFrame: 79
+=======
+      name: TEST
+      takeName: TEST
+      internalID: 0
+      firstFrame: -1
+      lastFrame: 159
+>>>>>>> Stashed changes
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -323,6 +354,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+<<<<<<< Updated upstream
     - serializedVersion: 16
       name: attack_combo_01
       takeName: attack_combo_01
@@ -671,6 +703,8 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+>>>>>>> Stashed changes
     isReadable: 1
   meshes:
     lODScreenPercentages: []
