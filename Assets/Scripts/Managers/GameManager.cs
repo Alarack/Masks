@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
                 return allAbilities[i];
         }
 
-        //Debug.Log("couldin't find " + abilityName);
+        Debug.Log("couldin't find " + abilityName);
 
         return null;
     }

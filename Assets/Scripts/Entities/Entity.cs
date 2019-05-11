@@ -4,8 +4,19 @@ using UnityEngine;
 using LL.FSM;
 using LL.Events;
 
+
+public enum DimensionMode
+{
+    Two,
+    Three
+}
+
+
 public class Entity : MonoBehaviour
 {
+
+    public DimensionMode dimensionMode;
+
     public string entityName;
 
     [Header("Entity Stats")]
@@ -32,10 +43,10 @@ public class Entity : MonoBehaviour
         InitStats();
 
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        AnimHelper = GetComponent<AnimHelper>();
+        AnimHelper = GetComponentInChildren<AnimHelper>();
         EffectDelivery = GetComponentInChildren<EffectDelivery>();
 
-        
+
 
         Movement = GetComponent<EntityMovement>();
         if (Movement != null)
@@ -60,7 +71,7 @@ public class Entity : MonoBehaviour
         if (EntityStats != null)
             return;
 
-        if(statTemplate == null)
+        if (statTemplate == null)
         {
             Debug.LogError(gameObject.name + " does not have a stat template");
             return;

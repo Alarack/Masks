@@ -5,12 +5,18 @@ using UnityEngine;
 public class EntityMovement : MonoBehaviour {
 
 
+    public const float leftYRotation = 225f;
+    public const float rightYRotation = 125f;
+
     public enum FacingDirection {
         Left,
         Right
     }
 
     public FacingDirection Facing { get { return GetFacing(); } }
+    public float currentYRotation;
+    public float desiredYRotation;
+    public GameObject model;
     public Entity Owner { get; protected set; }
     public Rigidbody2D MyBody { get; private set; }
     public BoxCollider2D BoxCollider { get; private set; }
@@ -112,7 +118,21 @@ public class EntityMovement : MonoBehaviour {
 
     public FacingDirection GetFacing()
     {
-        return Owner.SpriteRenderer.flipX ? FacingDirection.Left : FacingDirection.Right;
+        switch (Owner.dimensionMode)
+        {
+            case DimensionMode.Two:
+                return Owner.SpriteRenderer.flipX ? FacingDirection.Left : FacingDirection.Right;
+
+            case DimensionMode.Three:
+                return currentYRotation == leftYRotation ? FacingDirection.Left : FacingDirection.Right;
+
+            default:
+                return Owner.SpriteRenderer.flipX ? FacingDirection.Left : FacingDirection.Right;
+        }
+
+
+
+        
     }
 
     protected virtual void UpdateFacing()
@@ -197,56 +217,55 @@ public class EntityMovement : MonoBehaviour {
         if (currentFacing == direction)
             return;
 
-        switch (direction)
+        switch (Owner.dimensionMode)
         {
-            case FacingDirection.Left:
-                Owner.SpriteRenderer.flipX = true;
-                break;
-            case FacingDirection.Right:
-                Owner.SpriteRenderer.flipX = false;
+            case DimensionMode.Two:
+                Owner.SpriteRenderer.flipX = direction == FacingDirection.Left ? true : false;
                 break;
 
+            case DimensionMode.Three:
+                desiredYRotation = direction == FacingDirection.Left ? leftYRotation : rightYRotation;
+                break;
         }
+
+        //switch (direction)
+        //{
+        //    case FacingDirection.Left:
+        //        Owner.SpriteRenderer.flipX = true;
+        //        break;
+        //    case FacingDirection.Right:
+        //        Owner.SpriteRenderer.flipX = false;
+        //        break;
+
+        //}
 
         //Debug.Log("facing: " + Facing);
         //Debug.Log("dir: " + currentHorizontalDirection);
     }
 
 
-    //private void RestoreKnockBack()
+
+
+    //public void ForceMovement(Vector2 force, float duration = 0.2f, bool resetVelocity = false)
     //{
-    //    knockedBack = false;
-    //    knockBackTimer = null;
+
+    //    if (resetVelocity == true)
+    //        MyBody.velocity = Vector2.zero;
+
+    //    MyBody.velocity += force;
+        
     //}
 
+    //public void SpinCrazy()
+    //{
+    //    float randongRotSpeed = Random.Range(-720f, 720f);
+    //    float randomY = Random.Range(250f, 350f);
 
-    public void ForceMovement(Vector2 force, float duration = 0.2f, bool resetVelocity = false)
-    {
-        //knockedBack = true;
-        //if(knockBackTimer == null)
-        //    knockBackTimer = new Timer(duration, RestoreKnockBack);
-        //else
-        //{
-        //    knockBackTimer.ModifyDuration(duration);
-        //}
-
-        if (resetVelocity == true)
-            MyBody.velocity = Vector2.zero;
-
-        MyBody.velocity += force;
-        
-    }
-
-    public void SpinCrazy()
-    {
-        float randongRotSpeed = Random.Range(-720f, 720f);
-        float randomY = Random.Range(250f, 350f);
-
-        Vector2 force = new Vector2(MyBody.velocity.x, randomY);
-        MyBody.freezeRotation = false;
-        MyBody.gravityScale = 1.5f;
-        MyBody.angularVelocity = randongRotSpeed;
-    }
+    //    Vector2 force = new Vector2(MyBody.velocity.x, randomY);
+    //    MyBody.freezeRotation = false;
+    //    MyBody.gravityScale = 1.5f;
+    //    MyBody.angularVelocity = randongRotSpeed;
+    //}
 
 
 }

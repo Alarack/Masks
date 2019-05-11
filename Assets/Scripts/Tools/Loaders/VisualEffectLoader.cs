@@ -24,7 +24,7 @@ public static class VisualEffectLoader  {
 
     public static GameObject LoadVisualEffect(VisualEffectShape shape, VisualEffectSize size, string name = "")
     {
-        GameObject result = Resources.Load("Visual Effects/" + shape + "/" + size + name) as GameObject;
+        GameObject result = Resources.Load("Effect Zones/" + shape + "/" + size + name) as GameObject;
 
         return result;
     }

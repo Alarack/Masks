@@ -407,7 +407,7 @@ public class Ability
         if (UseDuration > 0)
             InUse = true;
 
-        //Debug.Log(abilityName + " has been activated");
+        Debug.Log(abilityName + " has been activated");
 
         targets.Clear();
 

@@ -62,18 +62,46 @@ public class EnemyMovement : EntityMovement
         if (Owner == null)
             return;
 
-
-        if (currentHorizontalDirection < 0 && Owner.SpriteRenderer.flipX == false)
+        switch (Owner.dimensionMode)
         {
-            Owner.SpriteRenderer.flipX = true;
-            SwapWeaponSide();
+            case DimensionMode.Two:
+                if (currentHorizontalDirection < 0 && Owner.SpriteRenderer.flipX == false)
+                {
+                    Owner.SpriteRenderer.flipX = true;
+                    SwapWeaponSide();
+                }
+
+                if (currentHorizontalDirection > 0 && Owner.SpriteRenderer.flipX == true)
+                {
+                    Owner.SpriteRenderer.flipX = false;
+                    SwapWeaponSide();
+                }
+                break;
+
+            case DimensionMode.Three:
+                if (GameInput.Horizontal < 0 && currentYRotation != leftYRotation)
+                {
+                    desiredYRotation = leftYRotation;
+                    SwapWeaponSide();
+                }
+
+                if (GameInput.Horizontal > 0 && currentYRotation != rightYRotation)
+                {
+                    desiredYRotation = rightYRotation;
+                    SwapWeaponSide();
+                }
+
+
+                if (currentYRotation != desiredYRotation)
+                {
+                    currentYRotation = Mathf.MoveTowardsAngle(currentYRotation, desiredYRotation, 15f * Time.deltaTime);
+
+                    model.transform.localEulerAngles = new Vector3(0f, currentYRotation, 0f);
+                }
+                break;
         }
 
-        if (currentHorizontalDirection > 0 && Owner.SpriteRenderer.flipX == true)
-        {
-            Owner.SpriteRenderer.flipX = false;
-            SwapWeaponSide();
-        }
+
     }
 
    
@@ -84,7 +112,17 @@ public class EnemyMovement : EntityMovement
             return;
 
         recentFlip = true;
-        Owner.SpriteRenderer.flipX = !Owner.SpriteRenderer.flipX;
+        switch (Owner.dimensionMode)
+        {
+            case DimensionMode.Two:
+                Owner.SpriteRenderer.flipX = !Owner.SpriteRenderer.flipX;
+                break;
+
+            case DimensionMode.Three:
+                desiredYRotation = Facing == FacingDirection.Left ? rightYRotation : leftYRotation;
+                break;
+        }
+        
     }
 
     private void ResetFlipTimer()

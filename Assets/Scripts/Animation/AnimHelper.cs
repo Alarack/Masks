@@ -9,11 +9,12 @@ public class AnimHelper : MonoBehaviour
 
     public Animator Anim { get; private set; }
     private Action callback;
-
+    private Entity owner;
 
     private void Awake()
     {
         Anim = GetComponentInChildren<Animator>();
+        owner = GetComponentInParent<Entity>();
     }
 
 
@@ -23,10 +24,10 @@ public class AnimHelper : MonoBehaviour
         if (Anim == null)
             return;
 
-        if (Anim.GetBool("Walking") == true)
+        if (Anim.GetBool("moving") == true)
             return;
 
-        Anim.SetBool("Walking", true);
+        Anim.SetBool("moving", true);
     }
 
     public void StopWalk()
@@ -34,10 +35,10 @@ public class AnimHelper : MonoBehaviour
         if (Anim == null)
             return;
 
-        if (Anim.GetBool("Walking") == false)
+        if (Anim.GetBool("moving") == false)
             return;
 
-        Anim.SetBool("Walking", false);
+        Anim.SetBool("moving", false);
     }
 
 
@@ -126,7 +127,7 @@ public class AnimHelper : MonoBehaviour
         if (names.Length < 2)
             return;
 
-        Ability targetAbility = GameManager.GetAbilityByOwner(gameObject, names[0]);
+        Ability targetAbility = GameManager.GetAbilityByOwner(owner.gameObject, names[0]);
 
         if(targetAbility == null)
         {

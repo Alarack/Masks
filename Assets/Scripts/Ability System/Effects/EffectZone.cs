@@ -49,6 +49,7 @@ public abstract class EffectZone : MonoBehaviour {
 
         //Debug.Log("Effect zone created");
 
+        TestVelocitySwap();
     }
 
     protected abstract void Apply(GameObject target);
@@ -177,6 +178,26 @@ public abstract class EffectZone : MonoBehaviour {
 
         GameObject impact = Instantiate(loadedPrefab, loc, Quaternion.identity) as GameObject;
         Destroy(impact, 2f);
+    }
+
+
+    private void TestVelocitySwap()
+    {
+        ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+        EntityMovement.FacingDirection facing = parentEffect.Source.Entity().Movement.Facing;
+
+        foreach(ParticleSystem p in particles)
+        {
+            ParticleSystem.VelocityOverLifetimeModule vMod = p.velocityOverLifetime;
+
+            float min = facing == EntityMovement.FacingDirection.Left ? -vMod.x.constantMin : vMod.x.constantMin;
+            float max = facing == EntityMovement.FacingDirection.Left ? -vMod.x.constantMax : vMod.x.constantMax;
+
+
+            ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve(min, max);
+            vMod.x = curve;
+           
+        }
     }
 
 }

@@ -168,17 +168,50 @@ public class PlayerController : EntityMovement {
 
     protected override void UpdateFacing()
     {
-        if (GameInput.Horizontal < 0 && Owner.SpriteRenderer.flipX == false)
+
+        switch (Owner.dimensionMode)
         {
-            Owner.SpriteRenderer.flipX = true;
-            SwapWeaponSide();
+            case DimensionMode.Two:
+                if (GameInput.Horizontal < 0 && Owner.SpriteRenderer.flipX == false)
+                {
+                    Owner.SpriteRenderer.flipX = true;
+                    SwapWeaponSide();
+                }
+
+                if (GameInput.Horizontal > 0 && Owner.SpriteRenderer.flipX == true)
+                {
+                    Owner.SpriteRenderer.flipX = false;
+                    SwapWeaponSide();
+                }
+                break;
+
+            case DimensionMode.Three:
+                if(GameInput.Horizontal < 0 && currentYRotation != leftYRotation)
+                {
+                    desiredYRotation = leftYRotation;
+                    SwapWeaponSide();
+                }
+
+                if(GameInput.Horizontal > 0 && currentYRotation != rightYRotation)
+                {
+                    desiredYRotation = rightYRotation;
+                    SwapWeaponSide();
+                }
+                
+
+                if(currentYRotation != desiredYRotation)
+                {
+                    currentYRotation = Mathf.MoveTowardsAngle(currentYRotation, desiredYRotation, Owner.EntityStats.GetStatModifiedValue(BaseStat.StatType.RotateSpeed) * Time.deltaTime);
+
+                    model.transform.localEulerAngles = new Vector3(0f, currentYRotation, 0f);
+                }
+
+
+                break;
         }
 
-        if (GameInput.Horizontal > 0 && Owner.SpriteRenderer.flipX == true)
-        {
-            Owner.SpriteRenderer.flipX = false;
-            SwapWeaponSide();
-        }
+
+
     }
 
 
