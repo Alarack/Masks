@@ -75,7 +75,7 @@ MonoBehaviour:
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
       zoneName: DarkEnergy
-    animationTrigger: Attack1
+    animationTrigger: AttackRun
     layerMask:
       serializedVersion: 2
       m_Bits: 1024
@@ -150,8 +150,8 @@ MonoBehaviour:
       options: 
     addForceInfo:
       directionType: 5
-      amount: 500
-      angle: 15
+      amount: 1500
+      angle: 10
       error: 0
       resetCurrentVelocity: 1
   recoveryData:
