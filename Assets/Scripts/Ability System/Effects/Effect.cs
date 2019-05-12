@@ -287,7 +287,7 @@ public class Effect
     {
         //TODO: this assumes the source is always an entity, it could be a projectile
         animStarted = Source.Entity().AnimHelper.PlayAnimTrigger(animationTrigger); // Animation trigger will start the delivery at the right time.
-
+        //Debug.Log("Anim: " + animationTrigger + " started on " + effectName + " from " + parentAbility.abilityName);
         if (animStarted == false)// Start Delivery Instantly if there isn't an animation.
         {
             //if (Source.Entity() is EntityEnemy)

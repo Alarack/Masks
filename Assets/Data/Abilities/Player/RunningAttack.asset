@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10cebe3e03a921f498c13bc9bb62bdaa, type: 3}
-  m_Name: Attack1
+  m_Name: RunningAttack
   m_EditorClassIdentifier: 
-  abilityName: Attack 1
+  abilityName: Running Attack
   baseWeight: 0
   activations:
   - activationMethod: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
     keyBind: 1
   conditions:
   - requiredCondition: 1
-    inverse: 1
+    inverse: 0
     compareAgainstTarget: 0
     weightModifer: 0
     type: 6
@@ -50,7 +50,7 @@ MonoBehaviour:
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
-  - effectName: First
+  - effectName: Damage
     riderTarget: 
     tags: 
     effectOrigin: 5
@@ -88,21 +88,21 @@ MonoBehaviour:
       shape: 0
       size: 3
       durationType: 0
-      instantZoneLife: 3
+      instantZoneLife: 1
       duration: 0
       interval: 0
       removeEffectOnExit: 0
-      parentEffectToOrigin: 0
+      parentEffectToOrigin: 1
       effectZoneAnimTrigger: 
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
       zoneName: DarkEnergy
-    animationTrigger: Attack1
+    animationTrigger: AttackRun
     layerMask:
       serializedVersion: 2
       m_Bits: 1024
     adjInfo:
-      adjustmentValue: -5
+      adjustmentValue: -10
       targetStat: 1
       modType: 0
       permanent: 1
@@ -113,7 +113,7 @@ MonoBehaviour:
       angle: 0
       error: 0
       resetCurrentVelocity: 0
-  - effectName: Hault Movement
+  - effectName: Leap
     riderTarget: 
     tags: 
     effectOrigin: 0
@@ -122,15 +122,15 @@ MonoBehaviour:
     weaponPrefabName: 
     weaponAnimTrigger: 
     deliveryMethod: 3
-    effectType: 1
+    effectType: 2
     durationType: 1
     statusTypeInfo:
-      stackMethod: 2
+      stackMethod: 0
       duration: 0.5
       interval: 0
       onCompleteEffectName: 
       maxStacks: 0
-      statusType: 9
+      statusType: 0
       animBool: 
       vfxName: 
       vfxPosOffset: {x: 0, y: 0}
@@ -165,23 +165,20 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     adjInfo:
-      adjustmentValue: -1
-      targetStat: 6
-      modType: 1
+      adjustmentValue: 0
+      targetStat: 0
+      modType: 0
       permanent: 0
       options: 
     addForceInfo:
-      directionType: 0
-      amount: 0
-      angle: 0
+      directionType: 5
+      amount: 500
+      angle: 25
       error: 0
       resetCurrentVelocity: 0
   recoveryData:
   - type: 1
-    cooldown: 0.2
+    cooldown: 1
     kills: 0
-  sequencedAbilities:
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 3d0ea9fff81988743984e3cf493a6ce8, type: 2}
-  - {fileID: 11400000, guid: f0d786244fd8e7141a0d81d1293dd595, type: 2}
-  sequenceWindow: 1
+  sequencedAbilities: []
+  sequenceWindow: 0.5

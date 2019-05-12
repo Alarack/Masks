@@ -13,6 +13,8 @@ public class AnimHelper : MonoBehaviour
     private Action callback;
     private Entity owner;
 
+    private bool canRecieveEvent = true;
+
     private void Awake()
     {
         Anim = GetComponentInChildren<Animator>();
@@ -75,7 +77,6 @@ public class AnimHelper : MonoBehaviour
         SetFloat("AttackSpeed", attackSpeed);
     }
 
-
     private void HandleSlideAnim()
     {
         float xVelocityAbs = Mathf.Abs(owner.Movement.MyPhysics.Velocity.x);
@@ -117,7 +118,6 @@ public class AnimHelper : MonoBehaviour
         return Anim.GetBool(name);
     }
 
-
     public void PlayOrStopAnimBool(string boolName, bool play = true)
     {
         //Debug.Log("Playing " + boolName + " " + play);
@@ -157,6 +157,7 @@ public class AnimHelper : MonoBehaviour
             return false;
         }
     }
+
     public void PlayParticleEffect(string particleName)
     {
         ParticleSystem p;
@@ -182,7 +183,6 @@ public class AnimHelper : MonoBehaviour
         
     }
 
-
     public void SetAnimEventAction(Action callback)
     {
         if(this.callback != callback)
@@ -191,17 +191,38 @@ public class AnimHelper : MonoBehaviour
 
     public void RecieveAnimEvent(AnimationEvent param)
     {
-        //Debug.Log("Recieving " + param.stringParameter /*+ " from anim event on " + gameObject.name*/);
+        Debug.Log("Recieving " + param.stringParameter /*+ " from anim event on " + gameObject.name*/);
 
         if (this.callback != null)
             callback();
 
+        if (canRecieveEvent == false)
+        {
+            Debug.Log("no");
+            return;
+        }
+        else
+        {
+            Debug.Log("yes");
+        }
+
+
         SendEffectDeliveryEvent(param);
+    }
+
+    private IEnumerator ResetEvent()
+    {
+        yield return new WaitForEndOfFrame();
+        canRecieveEvent = true;
     }
 
 
     private void SendEffectDeliveryEvent(AnimationEvent param)
     {
+
+
+
+        //Debug.Log(param.animatorClipInfo.weight);
 
         if (param.animatorClipInfo.weight < 0.5f)
             return;
@@ -226,6 +247,8 @@ public class AnimHelper : MonoBehaviour
             //Debug.LogError("Anim helper couldn't find an effect on " + targetAbility.abilityName + " with name: " + names[1]);
             return;
         }
+        canRecieveEvent = false;
+        StartCoroutine(ResetEvent());
 
         Debug.Log("Delivering " + targetEffect.effectName);
         targetEffect.BeginDelivery(targetEffect.weaponDelivery);

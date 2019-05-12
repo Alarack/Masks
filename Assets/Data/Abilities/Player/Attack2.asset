@@ -70,7 +70,7 @@ MonoBehaviour:
       duration: 0
       interval: 0
       removeEffectOnExit: 0
-      parentEffectToOrigin: 1
+      parentEffectToOrigin: 0
       effectZoneAnimTrigger: 
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
