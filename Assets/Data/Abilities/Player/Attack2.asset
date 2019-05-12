@@ -24,9 +24,9 @@ MonoBehaviour:
     keyBind: 1
   conditions: []
   abilityIcon: {fileID: 0}
-  useDuration: 0.5
+  useDuration: 0.1
   procChance: 1
-  overrideOtherAbilities: 0
+  overrideOtherAbilities: 1
   effectData:
   - effectName: Second
     riderTarget: 
@@ -156,7 +156,7 @@ MonoBehaviour:
       resetCurrentVelocity: 0
   recoveryData:
   - type: 1
-    cooldown: 0.5
+    cooldown: 0.2
     kills: 0
   sequencedAbilities:
   - {fileID: 0}

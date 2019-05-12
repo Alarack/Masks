@@ -46,7 +46,7 @@ MonoBehaviour:
     statRatioAmount: 0
     hasStatusType: 0
   abilityIcon: {fileID: 0}
-  useDuration: 0.5
+  useDuration: 0.1
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
@@ -178,7 +178,7 @@ MonoBehaviour:
       resetCurrentVelocity: 0
   recoveryData:
   - type: 1
-    cooldown: 0.5
+    cooldown: 0.2
     kills: 0
   sequencedAbilities:
   - {fileID: 11400000}

@@ -50,6 +50,8 @@ public class Entity : MonoBehaviour
 
         SpriteRenderer = GetComponent<SpriteRenderer>();
         AnimHelper = GetComponentInChildren<AnimHelper>();
+        if (AnimHelper != null)
+            AnimHelper.Initialize(this);
         EffectDelivery = GetComponentInChildren<EffectDelivery>();
 
         Movement = GetComponent<EntityMovement>();

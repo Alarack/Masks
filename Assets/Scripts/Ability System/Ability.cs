@@ -408,7 +408,8 @@ public class Ability
         if (UseDuration > 0)
             InUse = true;
 
-        //Debug.Log(abilityName + " has been activated");
+        if(sequencedAbilities.Count < 1)
+            Debug.Log(abilityName + " has been activated");
 
         targets.Clear();
 
