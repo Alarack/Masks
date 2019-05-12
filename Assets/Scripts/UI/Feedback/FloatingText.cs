@@ -22,7 +22,7 @@ public class FloatingText : MonoBehaviour
     //    Initialize("-5", Vector2.zero);
     //}
 
-    public void Initialize(string text, Vector2 startPosition)
+    public void Initialize(string text, Vector3 startPosition)
     {
         SetText(text);
         transform.localPosition = startPosition;

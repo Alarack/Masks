@@ -28,6 +28,7 @@ public class BaseStat {
         CoolDown = 10,
         AbilityCharge = 11,
         ProjectilePenetration = 12,
+        Acceleration = 13,
 
     }
 

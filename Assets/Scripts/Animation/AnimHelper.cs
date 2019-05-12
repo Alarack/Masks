@@ -8,6 +8,7 @@ public class AnimHelper : MonoBehaviour
 {
 
     public Animator Anim { get; private set; }
+    public bool doSlide;
     private Action callback;
     private Entity owner;
 
@@ -18,6 +19,26 @@ public class AnimHelper : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        if (doSlide)
+            HandleSlideAnim();
+
+
+    }
+
+
+    private void HandleSlideAnim()
+    {
+        float xVelocityAbs = Mathf.Abs(owner.Movement.MyPhysics.Velocity.x);
+
+        if (xVelocityAbs > 2f && GetBool("moving") == false)
+        {
+            PlayOrStopAnimBool("sliding", true);
+        }
+        else if (xVelocityAbs <= 2f && GetBool("moving") == false)
+            PlayOrStopAnimBool("sliding", false);
+    }
 
     public void PlayWalk()
     {
@@ -43,12 +64,15 @@ public class AnimHelper : MonoBehaviour
         Anim.SetBool("moving", false);
     }
 
+    public bool GetBool(string name)
+    {
+        return Anim.GetBool(name);
+    }
+
 
     public void PlayOrStopAnimBool(string boolName, bool play = true)
     {
-
         //Debug.Log("Playing " + boolName + " " + play);
-
         if (Anim == null)
             return;
 
@@ -65,7 +89,6 @@ public class AnimHelper : MonoBehaviour
     {
         if (Anim == null)
             return false;
-
 
         if (string.IsNullOrEmpty(trigger) == true)
             return false;

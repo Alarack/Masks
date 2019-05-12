@@ -24,7 +24,7 @@ MonoBehaviour:
     keyBind: 1
   conditions: []
   abilityIcon: {fileID: 0}
-  useDuration: 0.2
+  useDuration: 0.5
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
@@ -63,7 +63,7 @@ MonoBehaviour:
         error: 0
         resetCurrentVelocity: 0
     effectZoneInfo:
-      shape: 3
+      shape: 0
       size: 3
       durationType: 0
       instantZoneLife: 3
@@ -91,9 +91,72 @@ MonoBehaviour:
       angle: 0
       error: 0
       resetCurrentVelocity: 0
+  - effectName: 
+    riderTarget: 
+    tags: 
+    effectOrigin: 0
+    weaponDelivery: 0
+    weaponDeliveryAnimSpeed: 1
+    weaponPrefabName: 
+    weaponAnimTrigger: 
+    deliveryMethod: 3
+    effectType: 1
+    durationType: 1
+    statusTypeInfo:
+      stackMethod: 2
+      duration: 0.5
+      interval: 0
+      onCompleteEffectName: 
+      maxStacks: 0
+      statusType: 0
+      animBool: 
+      vfxName: 
+      vfxPosOffset: {x: 0, y: 0}
+    projectileInfo:
+      prefabName: 
+      spreadType: 0
+      projectileCount: 0
+      error: 0
+      burstDelay: 0
+      addInitialForce: 0
+      initialForce:
+        directionType: 0
+        amount: 0
+        angle: 0
+        error: 0
+        resetCurrentVelocity: 0
+    effectZoneInfo:
+      shape: 0
+      size: 0
+      durationType: 0
+      instantZoneLife: 0
+      duration: 0
+      interval: 0
+      removeEffectOnExit: 0
+      parentEffectToOrigin: 0
+      effectZoneAnimTrigger: 
+      effectZoneImpactVFX: 
+      effectZoneSpawnVFX: 
+      zoneName: 
+    animationTrigger: 
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    adjInfo:
+      adjustmentValue: -1
+      targetStat: 6
+      modType: 1
+      permanent: 0
+      options: 
+    addForceInfo:
+      directionType: 0
+      amount: 0
+      angle: 0
+      error: 0
+      resetCurrentVelocity: 0
   recoveryData:
   - type: 1
-    cooldown: 0.2
+    cooldown: 0.5
     kills: 0
   sequencedAbilities:
   - {fileID: 0}

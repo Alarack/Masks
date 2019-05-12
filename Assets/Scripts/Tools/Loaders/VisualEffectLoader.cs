@@ -42,14 +42,16 @@ public static class VisualEffectLoader  {
 
         if(loadedText == null)
         {
-            Debug.Log("Couldn't find floating test asset");
+            Debug.Log("Couldn't find floating text asset");
             return;
         }
 
-        GameObject activeText = GameObject.Instantiate(loadedText, location, Quaternion.identity) as GameObject;
+        Vector3 loc = new Vector3(location.x, location.y, -3f);
+
+        GameObject activeText = GameObject.Instantiate(loadedText, loc, Quaternion.identity) as GameObject;
 
         FloatingText textScript = activeText.GetComponent<FloatingText>();
-        textScript.Initialize(text, location);
+        textScript.Initialize(text, loc);
 
 
     }

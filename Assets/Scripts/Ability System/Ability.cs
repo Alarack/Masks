@@ -408,7 +408,7 @@ public class Ability
         if (UseDuration > 0)
             InUse = true;
 
-        Debug.Log(abilityName + " has been activated");
+        //Debug.Log(abilityName + " has been activated");
 
         targets.Clear();
 
@@ -704,7 +704,7 @@ public class AbilityCondition
 
         result = compareAgainstTarget == true ? target.Entity().Movement.IsGrounded : source.Entity().Movement.IsGrounded;
 
-        Debug.Log(result + " is the grounded state");
+        //Debug.Log(result + " is the grounded state");
 
         return result;
     }
@@ -726,7 +726,7 @@ public class AbilityCondition
 
          result = compareAgainstTarget == true ? target.Entity().Movement.MyPhysics.Velocity.x != 0 : source.Entity().Movement.MyPhysics.Velocity.x != 0;
 
-        Debug.Log(result + " is weather or not the checked target is moving");
+        //Debug.Log(result + " is weather or not the checked target is moving");
 
         return result;
     }
