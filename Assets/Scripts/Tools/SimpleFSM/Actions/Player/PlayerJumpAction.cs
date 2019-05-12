@@ -43,7 +43,7 @@ public class PlayerJumpAction : BaseStateAction {
     {
         //Debug.Log("Trying to Jump");
 
-        float desiredJumpForce = playerController.RayController.IsGrounded ? playerController.jumpForce : playerController.arialJumpForce;
+        float desiredJumpForce = playerController.IsGrounded ? playerController.jumpForce : playerController.arialJumpForce;
 
         if (currentJumpCount >= playerController.maxJumpCount)
         {
@@ -51,11 +51,15 @@ public class PlayerJumpAction : BaseStateAction {
             return;
         }
 
-        owner.AnimHelper.PlayOrStopAnimBool("Jumping", true);
+        owner.AnimHelper.PlayOrStopAnimBool("jumping", true);
 
-        playerController.MyBody.velocity = new Vector2(playerController.MyBody.velocity.x, 0f);
+       
+        playerController.MyPhysics.SetVelocity(new Vector3(playerController.MyPhysics.Velocity.x, 0f, 0f));
+        //playerController.My2DBody.velocity = new Vector2(playerController.My2DBody.velocity.x, 0f);
 
-        playerController.MyBody.AddForce(Vector2.up * desiredJumpForce);
+        playerController.MyPhysics.AddForce(Vector3.up * desiredJumpForce);
+
+        //playerController.My2DBody.AddForce(Vector2.up * desiredJumpForce);
 
         currentJumpCount++;
     }
@@ -67,7 +71,7 @@ public class PlayerJumpAction : BaseStateAction {
             //Debug.Log("Reseting jump");
 
             currentJumpCount = 0;
-            owner.AnimHelper.PlayOrStopAnimBool("Jumping", false);
+            owner.AnimHelper.PlayOrStopAnimBool("jumping", false);
         }
     }
 }

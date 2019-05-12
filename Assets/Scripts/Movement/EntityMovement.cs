@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EntityMovement : MonoBehaviour {
+public class EntityMovement : MonoBehaviour
+{
 
 
-    public const float leftYRotation = 225f;
-    public const float rightYRotation = 125f;
+    public const float leftYRotation = 270f;
+    public const float rightYRotation = 90f;
 
-    public enum FacingDirection {
+    public enum FacingDirection
+    {
         Left,
         Right
     }
@@ -18,8 +18,16 @@ public class EntityMovement : MonoBehaviour {
     public float desiredYRotation;
     public GameObject model;
     public Entity Owner { get; protected set; }
-    public Rigidbody2D MyBody { get; private set; }
-    public BoxCollider2D BoxCollider { get; private set; }
+
+    ////2D
+    //public Rigidbody2D My2DBody { get { return MyPhysics.My2DBody; } }
+    //public BoxCollider2D Box2DCollider { get { return MyPhysics.Box2DCollider; } }
+
+    ////3D
+    //public Rigidbody My3DBody { get { return MyPhysics.My3DBody; } }
+    //public CapsuleCollider MyCapsuelCollider { get { return MyPhysics.MyCapsuelCollider; } }
+
+    public PhysicsInfo MyPhysics { get; protected set; }
 
     public float Speed { get { return Owner.EntityStats.GetStatModifiedValue(BaseStat.StatType.MoveSpeed); } }
 
@@ -30,27 +38,49 @@ public class EntityMovement : MonoBehaviour {
     [Header("Layer Masks")]
     public LayerMask groundLayer;
 
-    public RayCastController RayController { get; protected set; }
+    protected RayCastController ray2DController;
+    protected RayCast3DController ray3DController;
 
+    public bool IsGrounded { get { return GetGrounded(); } }
+    public bool IsAtLedge { get { return GetAtLedge(); } }
+    public bool IsHittingWall { get { return GetHittingWall(); } }
 
     //[Header("Flags for temp status")]
     //public bool knockedBack;
 
     private Timer knockBackTimer;
 
+    public virtual void Initialize(Entity owner)
+    {
+        MyPhysics = new PhysicsInfo(gameObject,
+            GetComponent<Rigidbody2D>(),
+            GetComponent<Rigidbody>(),
+            GetComponent<BoxCollider2D>(),
+            GetComponent<CapsuleCollider>());
+
+        //Debug.Log("Initializig entity movemment for " + owner.gameObject.name);
+        Owner = owner;
+
+        ray3DController = new RayCast3DController(this);
+
+    }
 
 
     protected virtual void Update()
     {
-        if (RayController != null)
-            RayController.ManagedUpdate();
+
+        switch (GameManager.Instance.dimensionMode)
+        {
+            case DimensionMode.Three:
+                ray3DController.ManagedUpdate();
+                break;
+
+            case DimensionMode.Two:
+                //ray2DController.ManagedUpdate();
+                break;
+        }
 
         ConfigureHorizontalDirection();
-
-        //if (knockBackTimer != null && knockedBack == true)
-        //{
-        //    knockBackTimer.UpdateClock();
-        //}
     }
 
     protected virtual void FixedUpdate()
@@ -60,46 +90,35 @@ public class EntityMovement : MonoBehaviour {
 
     public virtual void MoveHorizontal()
     {
-
         //Debug.Log(Speed + " is speed for " + Owner.gameObject.name);
-
-        if(Speed == 0)
+        if (Speed == 0)
         {
             Owner.AnimHelper.StopWalk();
         }
-
 
         bool underMovementAffecting = StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.MovementAffecting);
         bool underKnockback = StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.Knockback);
 
         if (underMovementAffecting == true || underKnockback == true)
         {
-            //if(Owner is EntityEnemy)
-            //{
-            //    Debug.Log(" I havea movement affecting status");
-            //}
-
             return;
         }
-
 
         if (currentHorizontalDirection == 0f)
         {
             Owner.AnimHelper.StopWalk();
-
-            //if (knockedBack == true)
-            //    return;
+            //Debug.Log("Not walking");
         }
         else
         {
-            if (RayController.IsGrounded)
+            if (IsGrounded)
+            {
+                //Debug.Log("Walking");
                 Owner.AnimHelper.PlayWalk();
+            }
         }
 
-        //if (Owner is EntityEnemy)
-        //    Debug.Log("No movement affecting status, so moving normal");
-
-        MyBody.velocity = new Vector2(currentHorizontalDirection * Speed, MyBody.velocity.y);
+        MyPhysics.SetVelocity(new Vector3(currentHorizontalDirection * Speed, MyPhysics.Velocity.y, 0f));
     }
 
     protected virtual void ConfigureHorizontalDirection()
@@ -107,18 +126,11 @@ public class EntityMovement : MonoBehaviour {
 
     }
 
-    public virtual void Initialize(Entity owner)
-    {
-        Owner = owner;
-        MyBody = GetComponent<Rigidbody2D>();
-        BoxCollider = GetComponent<BoxCollider2D>();
 
-        RayController = new RayCastController(this);
-    }
 
     public FacingDirection GetFacing()
     {
-        switch (Owner.dimensionMode)
+        switch (GameManager.Instance.dimensionMode)
         {
             case DimensionMode.Two:
                 return Owner.SpriteRenderer.flipX ? FacingDirection.Left : FacingDirection.Right;
@@ -132,7 +144,7 @@ public class EntityMovement : MonoBehaviour {
 
 
 
-        
+
     }
 
     protected virtual void UpdateFacing()
@@ -162,7 +174,7 @@ public class EntityMovement : MonoBehaviour {
             {
                 case Constants.EffectOrigin.RightHand:
 
-                    if(Owner.Movement.Facing == FacingDirection.Left)
+                    if (Owner.Movement.Facing == FacingDirection.Left)
                     {
                         Owner.CurrentWeapon.transform.SetParent(Owner.EffectDelivery.GetOriginPoint(Constants.EffectOrigin.LeftHand), false);
                         Owner.CurrentWeapon.transform.localScale = new Vector3(
@@ -174,7 +186,7 @@ public class EntityMovement : MonoBehaviour {
                     break;
 
                 case Constants.EffectOrigin.LeftHand:
-                    if(Owner.Movement.Facing == FacingDirection.Right)
+                    if (Owner.Movement.Facing == FacingDirection.Right)
                     {
                         Owner.CurrentWeapon.transform.SetParent(Owner.EffectDelivery.GetOriginPoint(Constants.EffectOrigin.RightHand), false);
                         Owner.CurrentWeapon.transform.localScale = new Vector3(
@@ -217,7 +229,7 @@ public class EntityMovement : MonoBehaviour {
         if (currentFacing == direction)
             return;
 
-        switch (Owner.dimensionMode)
+        switch (GameManager.Instance.dimensionMode)
         {
             case DimensionMode.Two:
                 Owner.SpriteRenderer.flipX = direction == FacingDirection.Left ? true : false;
@@ -227,45 +239,104 @@ public class EntityMovement : MonoBehaviour {
                 desiredYRotation = direction == FacingDirection.Left ? leftYRotation : rightYRotation;
                 break;
         }
+    }
 
-        //switch (direction)
-        //{
-        //    case FacingDirection.Left:
-        //        Owner.SpriteRenderer.flipX = true;
-        //        break;
-        //    case FacingDirection.Right:
-        //        Owner.SpriteRenderer.flipX = false;
-        //        break;
 
-        //}
+    public bool GetGrounded()
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            return ray2DController.IsGrounded;
+        else
+            return ray3DController.IsGrounded;
+    }
 
-        //Debug.Log("facing: " + Facing);
-        //Debug.Log("dir: " + currentHorizontalDirection);
+    public bool GetHittingWall()
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            return ray2DController.IsHittingWall;
+        else
+            return ray3DController.IsHittingWall;
+    }
+
+    public bool GetAtLedge()
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            return ray2DController.IsAtLedge;
+        else
+            return ray3DController.IsAtLedge;
     }
 
 
 
+}
 
-    //public void ForceMovement(Vector2 force, float duration = 0.2f, bool resetVelocity = false)
-    //{
 
-    //    if (resetVelocity == true)
-    //        MyBody.velocity = Vector2.zero;
+public class PhysicsInfo
+{
+    //2D
+    public Rigidbody2D My2DBody { get; private set; }
+    public BoxCollider2D Box2DCollider { get; private set; }
 
-    //    MyBody.velocity += force;
-        
-    //}
+    //3D
+    public Rigidbody My3DBody { get; private set; }
+    public CapsuleCollider MyCapsuelCollider { get; private set; }
 
-    //public void SpinCrazy()
-    //{
-    //    float randongRotSpeed = Random.Range(-720f, 720f);
-    //    float randomY = Random.Range(250f, 350f);
+    public GameObject Owner { get; private set; }
 
-    //    Vector2 force = new Vector2(MyBody.velocity.x, randomY);
-    //    MyBody.freezeRotation = false;
-    //    MyBody.gravityScale = 1.5f;
-    //    MyBody.angularVelocity = randongRotSpeed;
-    //}
+    public Vector3 Velocity { get { return GetVelocity(); } }
 
+
+    public PhysicsInfo(GameObject owner, Rigidbody2D rb2d, Rigidbody rb, Collider2D col2d, Collider col3d)
+    {
+        if (col2d is BoxCollider2D)
+            this.Box2DCollider = col2d as BoxCollider2D;
+
+        if (col3d is CapsuleCollider)
+            this.MyCapsuelCollider = col3d as CapsuleCollider;
+
+        this.Owner = owner;
+        this.My2DBody = rb2d;
+        this.My3DBody = rb;
+
+    }
+
+    public void AddForce(Vector3 force)
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            My2DBody.AddForce(force);
+        else
+            My3DBody.AddForce(force);
+    }
+    public void AddVelocity(Vector3 velocity)
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            My2DBody.velocity += (Vector2)velocity;
+        else
+            My3DBody.velocity += velocity;
+    }
+
+    public void ResetVelocity()
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            My2DBody.velocity = Vector2.zero;
+        else
+            My3DBody.velocity = Vector3.zero;
+    }
+
+    public void SetVelocity(Vector3 velocity)
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            My2DBody.velocity = velocity;
+        else
+            My3DBody.velocity = velocity;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        if (GameManager.Instance.dimensionMode == DimensionMode.Two)
+            return My2DBody.velocity;
+        else
+            return My3DBody.velocity;
+    }
 
 }

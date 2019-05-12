@@ -27,11 +27,11 @@ public class StatusMovementAffecting : Status {
         if(Target != null)
         {
             if (forceInfo.resetCurrentVelocity == true)
-                Target.Entity().Movement.MyBody.velocity = Vector2.zero;
+                Target.Entity().Movement.MyPhysics.ResetVelocity();
 
             //Debug.Log(knockback + " has been applied from " + SourceEffect.effectName + " on " + SourceAbility.abilityName);
 
-            Target.Entity().Movement.MyBody.AddForce(knockback);
+            Target.Entity().Movement.MyPhysics.AddForce(knockback);
         }
     }
 

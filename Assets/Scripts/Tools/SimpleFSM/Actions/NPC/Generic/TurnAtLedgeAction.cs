@@ -13,7 +13,7 @@ public class TurnAtLedgeAction : BaseStateAction {
 
     public override void Execute()
     {
-        if (enemyMovement.RayController.IsAtLedge)
+        if (enemyMovement.IsAtLedge)
         {
             enemyMovement.FlipDirection();
             //Debug.Log("Edge flip");

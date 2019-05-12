@@ -690,7 +690,7 @@ public class AbilityCondition
     {
         bool result = false;
 
-        result = compareAgainstTarget == true ? target.Entity().Movement.RayController.IsGrounded : source.Entity().Movement.RayController.IsGrounded;
+        result = compareAgainstTarget == true ? target.Entity().Movement.IsGrounded : source.Entity().Movement.IsGrounded;
 
         return result;
     }

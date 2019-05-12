@@ -13,6 +13,15 @@ public class EntityEnemy : Entity
     {
         InitStats();
         
+       
+
+        base.Awake();
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
         AISensor = GetComponentInChildren<AISensor>();
         if (AISensor != null)
             AISensor.Initialize(this);
@@ -21,12 +30,6 @@ public class EntityEnemy : Entity
         if (Brain != null)
             Brain.Initialize(this, AISensor);
 
-        base.Awake();
-    }
-
-
-    private void Start()
-    {
         //FSM TESTING
         FSMState normalState = FSMManager.GetState("ZombieWander");
         if (normalState != null)
@@ -35,6 +38,7 @@ public class EntityEnemy : Entity
         {
             Debug.LogError("Can't find Zombie Wander state");
         }
+
     }
 
     public void Aggro()

@@ -22,4 +22,4 @@ MonoBehaviour:
     baseValue: 100
   - variant: 1
     statType: 9
-    baseValue: 500
+    baseValue: 2000

@@ -22,7 +22,9 @@ public class AnimHelper : MonoBehaviour
     public void PlayWalk()
     {
         if (Anim == null)
+        {
             return;
+        }
 
         if (Anim.GetBool("moving") == true)
             return;
@@ -44,6 +46,9 @@ public class AnimHelper : MonoBehaviour
 
     public void PlayOrStopAnimBool(string boolName, bool play = true)
     {
+
+        //Debug.Log("Playing " + boolName + " " + play);
+
         if (Anim == null)
             return;
 

@@ -54,9 +54,10 @@ public class EffectAddForce : Effect
         //Debug.Log("adding " + forceToAdd);
 
         if (forceInfo.resetCurrentVelocity == true)
-            target.Entity().Movement.MyBody.velocity = Vector2.zero;
+            target.Entity().Movement.MyPhysics.ResetVelocity();
+            //target.Entity().Movement.My2DBody.velocity = Vector2.zero;
 
-        target.Entity().Movement.MyBody.AddForce(forceToAdd);
+        target.Entity().Movement.MyPhysics.AddForce(forceToAdd);
     }
 
 

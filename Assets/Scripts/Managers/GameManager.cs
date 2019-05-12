@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    public DimensionMode dimensionMode;
     public static GameManager Instance;
     public Transform splatHolder;
     public SpawnManager spawnManager;
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
     public int createdPooledObjects;
 
     public static List<Ability> allAbilities = new List<Ability>();
+    public static List<Entity> allEntities = new List<Entity>();
 
     private void Awake()
     {
@@ -23,6 +26,20 @@ public class GameManager : MonoBehaviour
         spawnManager = GetComponentInChildren<SpawnManager>();
         objectPools = GetComponentInChildren<ObjectPoolManager>();
 
+    }
+
+    private void Start()
+    {
+        int count = allEntities.Count;
+        for (int i = 0; i < count; i++)
+        {
+            allEntities[i].Initialize();
+        }
+    }
+
+    public static void RegisterEntity(Entity entity)
+    {
+        allEntities.AddUnique(entity);
     }
 
     public static Ability GetAbility(string abilityName)

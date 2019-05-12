@@ -28,32 +28,24 @@ public class PlayerController : EntityMovement {
     public float descendingFallMod = 1.5f;
     public float ascendingFallMod = 1f;
 
-    [Header("Dash Variables")]
-    public float dashDuration = 0.5f;
-    //public float dashSpeed = 30f;
-    public float dashCooldown = 3f;
-
-    [Header("Attack Variable")]
-    public GameObject attackGameObject;
-    public GameObject attackGameObjectVariant;
-    public Transform leftOrigin;
-    public Transform rightOrigin;
-
-    private GameObject currentAttackGameObject;
-
-
-    //public bool isDashActive;
-
 
     public System.Action onCollideWithGround;
 
     public override void Initialize(Entity owner)
     {
         base.Initialize(owner);
+
+       // Debug.Log("Player controller has been initialized");
+
+        SwapToDefaultState();
     }
 
-    private void Start()
+
+    private void SwapToDefaultState()
     {
+        Owner.InitFSM();
+
+
         //FSM TESTING
         FSMState normalState = Owner.FSMManager.GetState("PlayerNormal");
         if (normalState != null)
@@ -62,13 +54,6 @@ public class PlayerController : EntityMovement {
         {
             Debug.LogError("Can't find normal state");
         }
-    }
-
-
-
-    protected override void Update()
-    {
-        base.Update();
     }
 
     protected override void ConfigureHorizontalDirection()
@@ -91,7 +76,7 @@ public class PlayerController : EntityMovement {
         }
 
 
-        if (RayController.IsHittingWall && RayController.IsGrounded == false && MyBody.velocity.y <= 0)
+        if (IsHittingWall && IsGrounded == false && MyPhysics.Velocity.y <= 0)
         {
             currentHorizontalDirection = 0f;
         }
@@ -106,70 +91,10 @@ public class PlayerController : EntityMovement {
             VariableFall();
     }
 
-    //public override void MoveHorizontal()
-    //{
-    //    base.MoveHorizontal();
-    //}
-
-    #region ATTACKS
-
-    //private void Attack()
-    //{
-    //    currentAttackGameObject = attackGameObject;
-    //    Owner.AnimHelper.SetAnimEventAction(CreateAttackInstance);
-    //    Owner.AnimHelper.PlayAnimTrigger("Attack1");
-    //}
-
-    //private void Attack2()
-    //{
-    //    currentAttackGameObject = attackGameObjectVariant;
-    //    Owner.AnimHelper.SetAnimEventAction(CreateAttackInstance);
-    //    Owner.AnimHelper.PlayAnimTrigger("Attack1");
-    //}
-
-    //private void CreateAttackInstance()
-    //{
-    //    Transform origin = GetAttackOriginByFacing();
-
-    //    GameObject attack = Instantiate(currentAttackGameObject, origin.transform.position, currentAttackGameObject.transform.rotation) as GameObject;
-    //    attack.transform.SetParent(origin, false);
-    //    attack.transform.localPosition = Vector2.zero;
-    //    HitBox hit = attack.GetComponent<HitBox>();
-
-    //    Vector2 force = new Vector2(hit.xForce, hit.yForce);
-
-    //    hit.SetKnockBack(CalcKnockBack(force));
-    //    if (GetFacing() == FacingDirection.Left)
-    //    {
-    //        attack.transform.localScale = new Vector3(attack.transform.localScale.x * -1, 1, 1);
-    //    }
-    //    //Debug.Log(attack.name + " Created");
-    //}
-
-    //private Vector2 CalcKnockBack(Vector2 knockBack)
-    //{
-    //    Vector2 result = knockBack;
-
-    //    if (Facing == FacingDirection.Left)
-    //    {
-    //        result = new Vector2(knockBack.x * -1, knockBack.y);
-    //    }
-
-    //    return result;
-    //}
-
-    //private Transform GetAttackOriginByFacing()
-    //{
-    //    FacingDirection currentFacing = GetFacing();
-    //    return currentFacing == FacingDirection.Left ? leftOrigin : rightOrigin;
-    //}
-
-    #endregion
-
     protected override void UpdateFacing()
     {
 
-        switch (Owner.dimensionMode)
+        switch (GameManager.Instance.dimensionMode)
         {
             case DimensionMode.Two:
                 if (GameInput.Horizontal < 0 && Owner.SpriteRenderer.flipX == false)
@@ -219,16 +144,18 @@ public class PlayerController : EntityMovement {
     {
         Vector2 desiredFallVelocity = Vector2.zero;
 
-        if (MyBody.velocity.y < 0)
+        if (MyPhysics.Velocity.y < 0)
         {
             desiredFallVelocity = Vector2.up * Physics2D.gravity.y * descendingFallMod * Time.deltaTime;
         }
-        else if (MyBody.velocity.y > 0 && GameInput.JumpHeld == false)
+        else if (MyPhysics.Velocity.y > 0 && GameInput.JumpHeld == false)
         {
             desiredFallVelocity = Vector2.up * Physics2D.gravity.y * ascendingFallMod * Time.deltaTime;
         }
 
-        MyBody.velocity += desiredFallVelocity;
+
+        MyPhysics.AddVelocity(desiredFallVelocity);
+        //My2DBody.velocity += desiredFallVelocity;
     }
 
 
@@ -242,6 +169,17 @@ public class PlayerController : EntityMovement {
         if (onCollideWithGround != null)
             onCollideWithGround();
 
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (LayerTools.IsLayerInMask(groundLayer, other.gameObject.layer) == false)
+            return;
+
+        //Debug.Log("Collided with ground");
+
+        if (onCollideWithGround != null)
+            onCollideWithGround();
     }
 
 

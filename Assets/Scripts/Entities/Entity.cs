@@ -15,7 +15,7 @@ public enum DimensionMode
 public class Entity : MonoBehaviour
 {
 
-    public DimensionMode dimensionMode;
+    
 
     public string entityName;
 
@@ -40,28 +40,55 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
+        GameManager.RegisterEntity(this);
+
+    }
+
+    public virtual void Initialize()
+    {
         InitStats();
 
         SpriteRenderer = GetComponent<SpriteRenderer>();
         AnimHelper = GetComponentInChildren<AnimHelper>();
         EffectDelivery = GetComponentInChildren<EffectDelivery>();
 
-
-
         Movement = GetComponent<EntityMovement>();
         if (Movement != null)
             Movement.Initialize(this);
+
+
+        InitFSM();
+
+
 
         Health = GetComponent<HealthDeathManager>();
         if (Health != null)
             Health.Initialize(this);
 
 
+    }
 
-        EntityFSM = new FSM(this);
-        FSMManager = GetComponent<StateManager>();
-        if (FSMManager != null)
-            FSMManager.Initialize(this, EntityFSM);
+    public void InitFSM()
+    {
+        if(EntityFSM == null)
+        {
+            EntityFSM = new FSM(this);
+        }
+
+        if(FSMManager == null)
+        {
+            FSMManager = GetComponent<StateManager>();
+            if (FSMManager != null)
+                FSMManager.Initialize(this, EntityFSM);
+        }
+
+    }
+
+    protected virtual void Start()
+    {
+
+
+
 
     }
 

@@ -26,6 +26,8 @@ namespace LL.FSM {
 
         public virtual void Initialize(Entity owner)
         {
+            //Debug.Log("initializing actions for " + owner.gameObject.name);
+
             InitActions(owner, onEnterActions, StateActionType.Enter);
             InitActions(owner, onExitActions, StateActionType.Exit);
             InitActions(owner, onUpdateActions, StateActionType.Update);
@@ -76,6 +78,8 @@ namespace LL.FSM {
 
         private void RegisterAllEvents()
         {
+            //Debug.Log("registering all events");
+
             RegisterEventListeners(_OnEnterActions);
             RegisterEventListeners(_OnExitActions);
             RegisterEventListeners(_OnUpdateActions);
@@ -149,20 +153,6 @@ namespace LL.FSM {
                 }
             }
         }
-
-        //private List<Ability> GetAbilities(List<BaseStateAction> actions)
-        //{
-        //    List<Ability> results = new List<Ability>();
-
-        //    int count = actions.Count;
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        results.AddRange(actions[i].abilities);
-        //    }
-
-
-        //    return results;
-        //}
 
     }
 

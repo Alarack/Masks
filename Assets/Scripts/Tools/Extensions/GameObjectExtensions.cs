@@ -27,6 +27,11 @@ public static class GameObjectExtensions {
         return result;
     }
 
+    //public static bool GetBody(this GameObject go, out Rigidbody2D Body2d, out Rigidbody rigidbody)
+    //{
+
+    //}
+
     public static Entity Entity(this GameObject go)
     {
         if (go == null)
@@ -41,6 +46,22 @@ public static class GameObjectExtensions {
             return null;
 
         return go.GetComponentInParent<Projectile>();
+    }
+
+    public static Rigidbody2D RigidBody2D(this GameObject go)
+    {
+        if (go == null)
+            return null;
+
+        return go.GetComponent<Rigidbody2D>();
+    }
+
+    public static Rigidbody RigidBody(this GameObject go)
+    {
+        if (go == null)
+            return null;
+
+        return go.GetComponent<Rigidbody>();
     }
 
     public static MonoBehaviour GetMonoBehaviour(this GameObject go)

@@ -14,7 +14,7 @@ public class TurnAtWallAction : BaseStateAction
 
     public override void Execute()
     {
-        if (enemyMovement.RayController.IsHittingWall)
+        if (enemyMovement.IsHittingWall)
         {
             enemyMovement.FlipDirection();
             //Debug.Log("Wall flip");

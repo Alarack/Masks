@@ -62,7 +62,7 @@ public class EnemyMovement : EntityMovement
         if (Owner == null)
             return;
 
-        switch (Owner.dimensionMode)
+        switch (GameManager.Instance.dimensionMode)
         {
             case DimensionMode.Two:
                 if (currentHorizontalDirection < 0 && Owner.SpriteRenderer.flipX == false)
@@ -112,7 +112,7 @@ public class EnemyMovement : EntityMovement
             return;
 
         recentFlip = true;
-        switch (Owner.dimensionMode)
+        switch (GameManager.Instance.dimensionMode)
         {
             case DimensionMode.Two:
                 Owner.SpriteRenderer.flipX = !Owner.SpriteRenderer.flipX;
