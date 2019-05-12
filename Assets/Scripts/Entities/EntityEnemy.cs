@@ -30,14 +30,14 @@ public class EntityEnemy : Entity
         if (Brain != null)
             Brain.Initialize(this, AISensor);
 
-        //FSM TESTING
-        FSMState normalState = FSMManager.GetState("ZombieWander");
-        if (normalState != null)
-            EntityFSM.ChangeState(normalState);
-        else
-        {
-            Debug.LogError("Can't find Zombie Wander state");
-        }
+        ////FSM TESTING
+        //FSMState normalState = FSMManager.GetState("ZombieWander");
+        //if (normalState != null)
+        //    EntityFSM.ChangeState(normalState);
+        //else
+        //{
+        //    Debug.LogError("Can't find Zombie Wander state");
+        //}
 
     }
 

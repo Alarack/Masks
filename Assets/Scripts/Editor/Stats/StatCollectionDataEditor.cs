@@ -82,6 +82,10 @@ public class StatCollectionDataEditor : Editor {
             case BaseStat.StatType.ProjectilePenetration:
                 entry.baseValue = EditorHelper.IntField("Penetration Count", (int)entry.baseValue);
                 break;
+
+            case BaseStat.StatType.Acceleration:
+                entry.baseValue = EditorHelper.FloatField("Acceleration", entry.baseValue);
+                break;
         }
 
 

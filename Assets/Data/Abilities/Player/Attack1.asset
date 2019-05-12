@@ -22,9 +22,31 @@ MonoBehaviour:
     statChangeTarget: 0
     activationTime: 0
     keyBind: 1
-  conditions: []
+  conditions:
+  - requiredCondition: 1
+    inverse: 1
+    compareAgainstTarget: 0
+    weightModifer: 0
+    type: 6
+    targetDistance: 0
+    statValueTarget: 0
+    statValueAmount: 0
+    statRatioTarget: 0
+    statRatioAmount: 0
+    hasStatusType: 0
+  - requiredCondition: 1
+    inverse: 0
+    compareAgainstTarget: 0
+    weightModifer: 0
+    type: 4
+    targetDistance: 0
+    statValueTarget: 0
+    statValueAmount: 0
+    statRatioTarget: 0
+    statRatioAmount: 0
+    hasStatusType: 0
   abilityIcon: {fileID: 0}
-  useDuration: 0.2
+  useDuration: 0.1
   procChance: 1
   overrideOtherAbilities: 0
   effectData:
@@ -63,7 +85,7 @@ MonoBehaviour:
         error: 0
         resetCurrentVelocity: 0
     effectZoneInfo:
-      shape: 3
+      shape: 0
       size: 3
       durationType: 0
       instantZoneLife: 3
@@ -75,7 +97,7 @@ MonoBehaviour:
       effectZoneImpactVFX: 
       effectZoneSpawnVFX: 
       zoneName: DarkEnergy
-    animationTrigger: AttackRun
+    animationTrigger: Attack1
     layerMask:
       serializedVersion: 2
       m_Bits: 1024
@@ -91,7 +113,7 @@ MonoBehaviour:
       angle: 0
       error: 0
       resetCurrentVelocity: 0
-  - effectName: Forced Movement
+  - effectName: 
     riderTarget: 
     tags: 
     effectOrigin: 0
@@ -100,7 +122,7 @@ MonoBehaviour:
     weaponPrefabName: 
     weaponAnimTrigger: 
     deliveryMethod: 3
-    effectType: 2
+    effectType: 1
     durationType: 1
     statusTypeInfo:
       stackMethod: 2
@@ -143,17 +165,17 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     adjInfo:
-      adjustmentValue: 0
-      targetStat: 0
-      modType: 0
+      adjustmentValue: -1
+      targetStat: 6
+      modType: 1
       permanent: 0
       options: 
     addForceInfo:
-      directionType: 5
-      amount: 1500
-      angle: 10
+      directionType: 0
+      amount: 0
+      angle: 0
       error: 0
-      resetCurrentVelocity: 1
+      resetCurrentVelocity: 0
   recoveryData:
   - type: 1
     cooldown: 0.2

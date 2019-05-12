@@ -241,6 +241,7 @@ public class Ability
     public bool MeetsRequiredConditions(GameObject target)
     {
         int count = conditions.Count;
+        //Debug.Log(abilityName + " is checking  " + count +  " conditions at the required level");
         for (int i = 0; i < count; i++)
         {
             if (conditions[i].requiredCondition == false)
@@ -407,7 +408,8 @@ public class Ability
         if (UseDuration > 0)
             InUse = true;
 
-        Debug.Log(abilityName + " has been activated");
+        if(sequencedAbilities.Count < 1)
+            Debug.Log(abilityName + " has been activated");
 
         targets.Clear();
 
@@ -429,14 +431,16 @@ public class Ability
 
     private bool HandleActivationConditions(Constants.AbilityActivationCondition[] conditions)
     {
+        //Debug.Log("handeling activation conditions");
+
         bool result = false;
 
         if (RecoveryManager.HasRecovery == false)
-            return true;
+            result = true;
 
         bool freeActivation = conditions.Contains(Constants.AbilityActivationCondition.IgnoreCost) && conditions.Contains(Constants.AbilityActivationCondition.IgnoreRecovery);
         if (freeActivation)
-            return true;
+            result = true;
 
         if (conditions.Contains(Constants.AbilityActivationCondition.Normal) || conditions.Length < 1)
         {
@@ -452,8 +456,8 @@ public class Ability
                 //Spend Resource
             }
 
-            BufferMe(result);
-            return result;
+            //BufferMe(result);
+            //re result;
         }
 
         if (conditions.Contains(Constants.AbilityActivationCondition.IgnoreRecovery))
@@ -485,15 +489,18 @@ public class Ability
         }
         else
         {
+            //Debug.Log("Checking conditions for " + abilityName + " at the ability level");
+
             if (MeetsRequiredConditions(null) == false)
             {
-                //Debug.Log(abilityName + " failed to meet requirements");
+                Debug.Log(abilityName + " failed to meet requirements");
                 result = false;
             }
 
         }
 
-    
+        //Debug.Log("Result for handle activatons is " + result);
+
         BufferMe(result);
         return result;
     }
@@ -590,7 +597,8 @@ public class AbilityCondition
         StatRatio,
         HasStatus,
         Grounded,
-        HasTarget
+        HasTarget,
+        IsMoving
     }
 
     public bool requiredCondition;
@@ -628,8 +636,13 @@ public class AbilityCondition
             case AbilityConditionType.HasStatus:
                 break;
             case AbilityConditionType.Grounded:
+                result = CheckGrounded(target, source);
                 break;
             case AbilityConditionType.HasTarget:
+                break;
+
+            case AbilityConditionType.IsMoving:
+                result = CheckIsMoving(target, source);
                 break;
             default:
                 break;
@@ -692,6 +705,8 @@ public class AbilityCondition
 
         result = compareAgainstTarget == true ? target.Entity().Movement.IsGrounded : source.Entity().Movement.IsGrounded;
 
+        //Debug.Log(result + " is the grounded state");
+
         return result;
     }
 
@@ -702,6 +717,17 @@ public class AbilityCondition
         AISensor enemyAI = (source.Entity() as EntityEnemy).AISensor;
 
         result = enemyAI.ClosestTarget != null;
+
+        return result;
+    }
+    
+    public bool CheckIsMoving(GameObject target, GameObject source)
+    {
+        bool result = false;
+
+         result = compareAgainstTarget == true ? target.Entity().Movement.MyPhysics.Velocity.x != 0 : source.Entity().Movement.MyPhysics.Velocity.x != 0;
+
+        //Debug.Log(result + " is weather or not the checked target is moving");
 
         return result;
     }

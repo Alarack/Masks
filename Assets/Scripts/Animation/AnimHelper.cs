@@ -8,6 +8,8 @@ public class AnimHelper : MonoBehaviour
 {
 
     public Animator Anim { get; private set; }
+    public bool doSlide;
+    public bool updateAttackSpeed;
     private Action callback;
     private Entity owner;
 
@@ -17,7 +19,74 @@ public class AnimHelper : MonoBehaviour
         owner = GetComponentInParent<Entity>();
     }
 
+    private void Start()
+    {
 
+    }
+
+    public void Initialize(Entity owner)
+    {
+        if (updateAttackSpeed)
+            UpdateAttackFloat();
+    }
+
+    private void OnEnable()
+    {
+        if(updateAttackSpeed)
+            EventGrid.EventManager.RegisterListener(Constants.GameEvent.StatChanged, OnStatChanged);
+    }
+
+    private void OnDisable()
+    {
+        if (updateAttackSpeed)
+            EventGrid.EventManager.RemoveMyListeners(this);
+    }
+
+
+    private void Update()
+    {
+        if (doSlide)
+            HandleSlideAnim();
+
+
+    }
+
+    private void OnStatChanged(EventData data)
+    {
+        GameObject target = data.GetGameObject("Target");
+        BaseStat.StatType type = (BaseStat.StatType)data.GetInt("Stat");
+
+        if (target != owner.gameObject)
+            return;
+
+        if (type != BaseStat.StatType.AttackSpeed)
+            return;
+
+
+        UpdateAttackFloat();
+    }
+
+    private void UpdateAttackFloat()
+    {
+        float attackSpeed = owner.EntityStats.GetStatModifiedValue(BaseStat.StatType.AttackSpeed);
+
+        //Debug.Log(attackSpeed);
+
+        SetFloat("AttackSpeed", attackSpeed);
+    }
+
+
+    private void HandleSlideAnim()
+    {
+        float xVelocityAbs = Mathf.Abs(owner.Movement.MyPhysics.Velocity.x);
+
+        if (xVelocityAbs > 2f && GetBool("moving") == false)
+        {
+            PlayOrStopAnimBool("sliding", true);
+        }
+        else if (xVelocityAbs <= 2f && GetBool("moving") == false)
+            PlayOrStopAnimBool("sliding", false);
+    }
 
     public void PlayWalk()
     {
@@ -43,12 +112,15 @@ public class AnimHelper : MonoBehaviour
         Anim.SetBool("moving", false);
     }
 
+    public bool GetBool(string name)
+    {
+        return Anim.GetBool(name);
+    }
+
 
     public void PlayOrStopAnimBool(string boolName, bool play = true)
     {
-
         //Debug.Log("Playing " + boolName + " " + play);
-
         if (Anim == null)
             return;
 
@@ -61,11 +133,15 @@ public class AnimHelper : MonoBehaviour
         Anim.SetBool(boolName, play);
     }
 
+    public void SetFloat(string name, float value)
+    {
+        Anim.SetFloat(name, value);
+    }
+
     public bool PlayAnimTrigger(string trigger)
     {
         if (Anim == null)
             return false;
-
 
         if (string.IsNullOrEmpty(trigger) == true)
             return false;
@@ -127,6 +203,9 @@ public class AnimHelper : MonoBehaviour
     private void SendEffectDeliveryEvent(AnimationEvent param)
     {
 
+        if (param.animatorClipInfo.weight < 0.5f)
+            return;
+
         string[] names = param.stringParameter.Split(',');
 
         if (names.Length < 2)
@@ -148,6 +227,7 @@ public class AnimHelper : MonoBehaviour
             return;
         }
 
+        Debug.Log("Delivering " + targetEffect.effectName);
         targetEffect.BeginDelivery(targetEffect.weaponDelivery);
 
     }

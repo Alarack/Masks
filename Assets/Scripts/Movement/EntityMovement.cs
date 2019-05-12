@@ -30,6 +30,7 @@ public class EntityMovement : MonoBehaviour
     public PhysicsInfo MyPhysics { get; protected set; }
 
     public float Speed { get { return Owner.EntityStats.GetStatModifiedValue(BaseStat.StatType.MoveSpeed); } }
+    public float Acceleration { get { return Owner.EntityStats.GetStatModifiedValue(BaseStat.StatType.Acceleration); } }
 
     protected float currentHorizontalDirection;
     //public float desiredSpeed;
@@ -96,6 +97,15 @@ public class EntityMovement : MonoBehaviour
             Owner.AnimHelper.StopWalk();
         }
 
+        //if(MyPhysics.Velocity.x != 0f && Owner.AnimHelper.GetBool("moving") == true)
+        //{
+        //    Owner.AnimHelper.PlayOrStopAnimBool("sliding", true);
+        //}
+        //else
+        //{
+        //    Owner.AnimHelper.PlayOrStopAnimBool("sliding", false);
+        //}
+
         bool underMovementAffecting = StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.MovementAffecting);
         bool underKnockback = StatusManager.CheckForStatus(Owner.gameObject, Constants.StatusType.Knockback);
 
@@ -118,7 +128,14 @@ public class EntityMovement : MonoBehaviour
             }
         }
 
-        MyPhysics.SetVelocity(new Vector3(currentHorizontalDirection * Speed, MyPhysics.Velocity.y, 0f));
+        if(Mathf.Abs( MyPhysics.Velocity.x) <= Speed)
+        {
+            //Debug.Log(currentHorizontalDirection * Acceleration);
+            //Debug.Log(MyPhysics.Velocity.x);
+            MyPhysics.AddForce(new Vector3(currentHorizontalDirection * Acceleration, 0f, 0f));
+        }
+
+        //MyPhysics.SetVelocity(new Vector3(currentHorizontalDirection * Speed, MyPhysics.Velocity.y, 0f));
     }
 
     protected virtual void ConfigureHorizontalDirection()
