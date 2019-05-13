@@ -34,7 +34,7 @@ public class Ability
 
 
     protected float procChance = 1f;
-    protected AbilityData abilityData;
+    public AbilityData AbilityData { get; protected set; }
     protected Timer useTimer;
     protected float baseWeight;
 
@@ -51,7 +51,7 @@ public class Ability
 
     public Ability(AbilityData data, GameObject source, List<AbilityData> sequenceData = null, Ability parent = null)
     {
-        abilityData = data;
+        AbilityData = data;
         AbilityID = IDFactory.GenerateAbilityID();
         Source = source;
         EffectManager = new EffectManager(this);
@@ -85,15 +85,15 @@ public class Ability
 
     private void SetUpAbilityData()
     {
-        abilityName = abilityData.abilityName;
-        activations = abilityData.activations;
-        AbilityIcon = abilityData.abilityIcon;
-        UseDuration = abilityData.useDuration;
-        ProcChance = abilityData.procChance;
-        OverrideOtherAbilities = abilityData.overrideOtherAbilities;
-        baseWeight = abilityData.baseWeight;
-        conditions = abilityData.conditions;
-        sequenceWindow = abilityData.sequenceWindow;
+        abilityName = AbilityData.abilityName;
+        activations = AbilityData.activations;
+        AbilityIcon = AbilityData.abilityIcon;
+        UseDuration = AbilityData.useDuration;
+        ProcChance = AbilityData.procChance;
+        OverrideOtherAbilities = AbilityData.overrideOtherAbilities;
+        baseWeight = AbilityData.baseWeight;
+        conditions = AbilityData.conditions;
+        sequenceWindow = AbilityData.sequenceWindow;
 
         CreateEffects();
         CreateRecoveryMethods();
@@ -102,20 +102,20 @@ public class Ability
 
     private void CreateEffects()
     {
-        int count = abilityData.effectData.Count;
+        int count = AbilityData.effectData.Count;
         for (int i = 0; i < count; i++)
         {
-            Effect newEffect = EffectFactory.CreateEffect(this, abilityData.effectData[i]);
+            Effect newEffect = EffectFactory.CreateEffect(this, AbilityData.effectData[i]);
             EffectManager.AddEffect(newEffect);
         }
     }
 
     private void CreateRecoveryMethods()
     {
-        int count = abilityData.recoveryData.Count;
+        int count = AbilityData.recoveryData.Count;
         for (int i = 0; i < count; i++)
         {
-            AbilityRecovery newRevovrey = EffectFactory.CreateRecovery(this, abilityData.recoveryData[i]);
+            AbilityRecovery newRevovrey = EffectFactory.CreateRecovery(this, AbilityData.recoveryData[i]);
             RecoveryManager.AddRecoveryMethod(newRevovrey);
         }
     }
@@ -408,7 +408,7 @@ public class Ability
         if (UseDuration > 0)
             InUse = true;
 
-        if(sequencedAbilities.Count < 1)
+        if (sequencedAbilities.Count < 1)
             Debug.Log(abilityName + " has been activated");
 
         targets.Clear();
@@ -432,8 +432,15 @@ public class Ability
     private bool HandleActivationConditions(Constants.AbilityActivationCondition[] conditions)
     {
         //Debug.Log("handeling activation conditions");
-
         bool result = false;
+
+
+
+
+       
+
+
+        
 
         if (RecoveryManager.HasRecovery == false)
             result = true;
@@ -499,6 +506,11 @@ public class Ability
 
         }
 
+        if(ParentAbility != null)
+        {
+            result = IsSequenceRight();
+        }
+
         //Debug.Log("Result for handle activatons is " + result);
 
         BufferMe(result);
@@ -507,11 +519,114 @@ public class Ability
 
     private void BufferMe(bool passed)
     {
-        if(passed == false)
+        if (passed == false)
             InputBuffer.BufferAbility(this);
     }
 
+
+    private bool IsSequenceRight()
+    {
+        bool result = true;
+
+        if (ParentAbility != null)
+        {
+            AnimatorStateInfo currentState = Source.Entity().AnimHelper.GetCurrentAnimatorStateInfo(0);
+            Ability previous = ParentAbility.GetPreviousSequence(AbilityData);
+
+            if (previous != null)
+            {
+                if (previous.InUse == false)
+                {
+                    int mySequenceIndex = ParentAbility.GetSequenceIndex(AbilityData);
+
+                    switch (mySequenceIndex)
+                    {
+                        case 1:
+                            if (currentState.IsName("Attack1") == true)
+                                Debug.Log(abilityName + " is at index 1 in a sqeuence and " + previous.EffectManager.GetFirstEffect().effectName + " is animating");
+                            else
+                                result = false;
+
+                            break;
+
+                        case 2:
+                            if (currentState.IsName("Attack2"))
+                                Debug.Log(abilityName + " is at index 2 in a sqeuence and " + previous.EffectManager.GetFirstEffect().effectName + " is animating");
+                            else
+                                result = false;
+
+                            break;
+
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+
+
+    public void __DebugHash()
+    {
+
+
+
+        AnimatorStateInfo currentState = Source.Entity().AnimHelper.GetCurrentAnimatorStateInfo(0);
+
+
+        if (currentState.IsName("Attack1"))
+        {
+            Debug.Log("In attack1");
+        }
+
+        if (currentState.IsName("Attack2"))
+        {
+            Debug.Log("In attack2");
+        }
+
+        Debug.Log(currentState.shortNameHash + " is the current name hash");
+
+        int hash = Animator.StringToHash("Attack Combo.Attack1");
+
+        Debug.Log(hash + " is the hash for combo 1");
+    }
+
     #endregion
+
+    public Ability GetPreviousSequence(AbilityData abilityData)
+    {
+        if (this.AbilityData.sequencedAbilities.Contains(abilityData))
+        {
+            int index = this.AbilityData.sequencedAbilities.IndexOf(abilityData);
+
+            if (index == 0)
+                return null;
+
+            Ability previous = GameManager.GetAbility(this.AbilityData.sequencedAbilities[index - 1]);
+
+            return previous;
+        }
+
+        return null;
+    }
+
+    public int GetSequenceIndex(AbilityData data)
+    {
+        if (this.AbilityData.sequencedAbilities.Contains(data))
+        {
+            return this.AbilityData.sequencedAbilities.IndexOf(data);
+
+        }
+
+        return -1;
+    }
+
+    //public bool IsPrevousSequenceAnimPlaying(AbilityData data)
+    //{
+    //    Source.Entity().AnimHelper.
+    //}
 
 
     private List<EffectTag> GetTags()
@@ -720,13 +835,17 @@ public class AbilityCondition
 
         return result;
     }
-    
+
     public bool CheckIsMoving(GameObject target, GameObject source)
     {
         bool result = false;
 
-         result = compareAgainstTarget == true ? target.Entity().Movement.MyPhysics.Velocity.x != 0 : source.Entity().Movement.MyPhysics.Velocity.x != 0;
+        float xVel = compareAgainstTarget == true ? Mathf.Abs(target.Entity().Movement.MyPhysics.Velocity.x) : Mathf.Abs(source.Entity().Movement.MyPhysics.Velocity.x);
 
+        result = xVel > 0.1f; //compareAgainstTarget == true ? target.Entity().Movement.MyPhysics.Velocity.x != 0 : source.Entity().Movement.MyPhysics.Velocity.x != 0;
+
+
+        //Debug.Log(xVel + " is x velocity. " + result);
         //Debug.Log(result + " is weather or not the checked target is moving");
 
         return result;

@@ -40,11 +40,15 @@ public class SplatSpawner : MonoBehaviour
                 return;
             }
 
+            Quaternion rot = Quaternion.LookRotation(collisionEvents[i].normal);
+
+            //Debug.Log(rot.eulerAngles);
+
             ObjectPoolManager.PoolRequestInfo info = ObjectPoolManager.CreatePoolInfo(
                 poolType,
                 GameManager.Instance.splatHolder,
                 collisionEvents[i].intersection,
-                null,
+                rot,
                 true,
                 false
                 );
@@ -59,7 +63,7 @@ public class SplatSpawner : MonoBehaviour
             }
 
             Splat splat = pooledSplat as Splat;
-            splat.SetSplatVisualLayer(Splat.SplatLoacation.Foreground);
+            splat.SetSplatVisualLayer(Splat.SplatLoacation.Foreground, rot.eulerAngles);
 
 
 

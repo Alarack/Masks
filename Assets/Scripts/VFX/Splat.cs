@@ -59,9 +59,10 @@ public class Splat : PooledObject {
 
     }
 
-    public void SetSplatVisualLayer(SplatLoacation splatLocation)
+    public void SetSplatVisualLayer(SplatLoacation splatLocation, Vector3 euler)
     {
         this.splatLocation = splatLocation;
+        transform.rotation = Quaternion.Euler(euler.x, euler.y, transform.rotation.z);
     }
 
     private void SetSprite()
@@ -98,7 +99,7 @@ public class Splat : PooledObject {
                 break;
 
             case SplatLoacation.Foreground:
-                spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                //spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                 spriteRenderer.sortingOrder = 1;
                 break;
         }

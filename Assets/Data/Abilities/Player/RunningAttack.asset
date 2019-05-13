@@ -94,7 +94,7 @@ MonoBehaviour:
       removeEffectOnExit: 0
       parentEffectToOrigin: 1
       effectZoneAnimTrigger: 
-      effectZoneImpactVFX: 
+      effectZoneImpactVFX: Hit Impact
       effectZoneSpawnVFX: 
       zoneName: DarkEnergy
     animationTrigger: AttackRun

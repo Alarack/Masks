@@ -16,10 +16,10 @@ MonoBehaviour:
   stats:
   - variant: 1
     statType: 6
-    baseValue: 15
+    baseValue: 10
   - variant: 1
     statType: 5
-    baseValue: 2
+    baseValue: 3.5
   - variant: 2
     statType: 1
     baseValue: 100
@@ -28,4 +28,4 @@ MonoBehaviour:
     baseValue: 2000
   - variant: 1
     statType: 13
-    baseValue: 50
+    baseValue: 100

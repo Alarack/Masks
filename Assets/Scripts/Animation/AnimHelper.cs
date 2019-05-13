@@ -118,6 +118,15 @@ public class AnimHelper : MonoBehaviour
         return Anim.GetBool(name);
     }
 
+    public bool IsAnimState(string name, int layer)
+    {
+        return Anim.GetCurrentAnimatorStateInfo(layer).IsName(name);
+    }
+    public AnimatorStateInfo GetCurrentAnimatorStateInfo(int index)
+    {
+        return Anim.GetCurrentAnimatorStateInfo(index);
+    }
+
     public void PlayOrStopAnimBool(string boolName, bool play = true)
     {
         //Debug.Log("Playing " + boolName + " " + play);
@@ -191,20 +200,17 @@ public class AnimHelper : MonoBehaviour
 
     public void RecieveAnimEvent(AnimationEvent param)
     {
-        Debug.Log("Recieving " + param.stringParameter /*+ " from anim event on " + gameObject.name*/);
+        //Debug.Log("Recieving " + param.stringParameter /*+ " from anim event on " + gameObject.name*/);
 
         if (this.callback != null)
             callback();
 
         if (canRecieveEvent == false)
         {
-            Debug.Log("no");
+            //Debug.Log("can't recieve events right now");
             return;
         }
-        else
-        {
-            Debug.Log("yes");
-        }
+
 
 
         SendEffectDeliveryEvent(param);
@@ -220,12 +226,10 @@ public class AnimHelper : MonoBehaviour
     private void SendEffectDeliveryEvent(AnimationEvent param)
     {
 
+        //Debug.Log("Recieveing");
 
-
-        //Debug.Log(param.animatorClipInfo.weight);
-
-        if (param.animatorClipInfo.weight < 0.5f)
-            return;
+        //if (param.animatorClipInfo.weight < 0.5f)
+        //    return;
 
         string[] names = param.stringParameter.Split(',');
 
@@ -250,7 +254,7 @@ public class AnimHelper : MonoBehaviour
         canRecieveEvent = false;
         StartCoroutine(ResetEvent());
 
-        Debug.Log("Delivering " + targetEffect.effectName);
+        //Debug.Log("Delivering " + targetEffect.effectName);
         targetEffect.BeginDelivery(targetEffect.weaponDelivery);
 
     }

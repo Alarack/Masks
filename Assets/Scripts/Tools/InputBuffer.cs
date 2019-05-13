@@ -39,7 +39,7 @@ public class InputBuffer : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             bufferedAbilities[i].Activate();
-            Debug.Log("activated a buffered ability " + bufferedAbilities[i].abilityName);
+            //Debug.Log("activated a buffered ability " + bufferedAbilities[i].abilityName);
         }
 
         bufferedAbilities.Clear();
@@ -47,6 +47,6 @@ public class InputBuffer : MonoBehaviour
 
     public static void BufferAbility(Ability ability)
     {
-        Instance.bufferedAbilities.AddUnique(ability);
+        //Instance.bufferedAbilities.AddUnique(ability);
     }
 }

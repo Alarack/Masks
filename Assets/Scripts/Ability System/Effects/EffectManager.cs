@@ -152,6 +152,14 @@ public class EffectManager {
         return null;
     }
 
+    public Effect GetFirstEffect()
+    {
+        if (effects.Count > 0)
+            return effects[0];
+
+        return null;
+    }
+
     public Effect GetEffectByID(int id)
     {
         for (int i = 0; i < effects.Count; i++)

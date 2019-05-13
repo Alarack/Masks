@@ -66,21 +66,21 @@ MonoBehaviour:
       shape: 0
       size: 3
       durationType: 0
-      instantZoneLife: 4
+      instantZoneLife: 0.25
       duration: 0
       interval: 0
       removeEffectOnExit: 0
-      parentEffectToOrigin: 0
+      parentEffectToOrigin: 1
       effectZoneAnimTrigger: 
-      effectZoneImpactVFX: 
+      effectZoneImpactVFX: Hit Impact
       effectZoneSpawnVFX: 
-      zoneName: DarkEnergy3
+      zoneName: Basic
     animationTrigger: Attack3
     layerMask:
       serializedVersion: 2
       m_Bits: 1024
     adjInfo:
-      adjustmentValue: -5
+      adjustmentValue: -15
       targetStat: 1
       modType: 0
       permanent: 1
