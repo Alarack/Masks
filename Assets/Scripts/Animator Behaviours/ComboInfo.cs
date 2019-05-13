@@ -9,8 +9,8 @@ public class ComboInfo : StateMachineBehaviour
     {
         
 
-        if(stateInfo.IsName("Attack1"))
-            Debug.Log(stateInfo.shortNameHash + " has been entered");
+        //if(stateInfo.IsName("Attack1"))
+        //    Debug.Log(stateInfo.shortNameHash + " has been entered");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -22,8 +22,8 @@ public class ComboInfo : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (stateInfo.IsName("Attack1"))
-            Debug.Log(stateInfo.shortNameHash + " has been exited");
+        //if (stateInfo.IsName("Attack1"))
+        //    Debug.Log(stateInfo.shortNameHash + " has been exited");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

@@ -178,10 +178,10 @@ MonoBehaviour:
       resetCurrentVelocity: 0
   recoveryData:
   - type: 1
-    cooldown: 0.2
+    cooldown: 0.1
     kills: 0
   sequencedAbilities:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3d0ea9fff81988743984e3cf493a6ce8, type: 2}
   - {fileID: 11400000, guid: f0d786244fd8e7141a0d81d1293dd595, type: 2}
-  sequenceWindow: 1
+  sequenceWindow: 0.65
